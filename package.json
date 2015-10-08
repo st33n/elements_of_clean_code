@@ -1,0 +1,15 @@
+{
+  "name": "elements_of_clean_code",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-shell": "^1.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "localhost"
+  },
+  "author": "Jens Nordahl; Steen Lehmann",
+  "license": "MIT"
+}

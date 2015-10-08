@@ -1,0 +1,5 @@
+= ELEMENTS OF CLEAN CODE
+Jens Nordahl og Steen Lehmann
+
+include::names.txt[]
+

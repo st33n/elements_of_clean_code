@@ -1,0 +1,63 @@
+=  NAVNGIVNING
+
+* Brug navne der betyder noget, og er søgbare
+* Undgå forkortelser
+* Men brug i, j etc til loops, ikke theCount eller theIndex
+* Klasse-navne er navneord (Customer, Account, AddressParser)
+* Metode-navne er udsagnsord (postPayment, deletePage, save)
+* Overvej private constructor metoder, og statiske fabriksmetoder med bedre
+  navne (`Complex.fromReal(12.0)` er bedre end `new Complex(12.0)`)
+* Konsistens: add/remove, insert/delete
+* Brug navne fra Løsningsdomænet før Problemdomænet
+
+== Eksempel 1
+
+[source, java]
+----
+public List<int[]> getThem() {
+  List<int[]> list1 = new ArrayList<int[]>();
+  for (int[] x : theList) {
+    if (x[0] == 4)
+      list1.add(x);
+  }
+  return list1;
+}
+----
+
+[source, java]
+[role='incremental']
+----
+public List<int[]> getFlaggedCells() {
+  List<int[]> flaggedCells = new ArrayList<int[]>();
+  for (int[] cell : gameBoard) {
+    if (cell[STATUS_VALUE] == FLAGGED)
+      flaggedCells.add(cell);
+  }
+  return flaggedCells;
+}
+----
+
+== Eksempel 2
+
+[source, java]
+----
+public List<int[]> getFlaggedCells() {
+  List<int[]> flaggedCells = new ArrayList<int[]>();
+  for (int[] cell : gameBoard) {
+    if (cell[STATUS_VALUE] == FLAGGED)
+      flaggedCells.add(cell);
+  }
+  return flaggedCells;
+}
+----
+
+[source, java]
+----
+  public List<int[]> getFlaggedCells() {
+    return gameBoard.stream()
+        .filter(cell -> cell[STATUS_VALUE] == FLAGGED)
+        .collect(Collectors.toList());
+  }
+----
+
+
