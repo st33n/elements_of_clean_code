@@ -1,0 +1,5 @@
+= Presentation on Clean Code
+Jens Nordahl and Steen Lehmann
+
+To generate the Slidey HTML presentation and keep watching for changes, do
+`npm install` then `grunt`.
