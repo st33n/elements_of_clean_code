@@ -1,4 +1,4 @@
-=  NAVNGIVNING
+==  NAVNGIVNING
 
 * Brug navne der betyder noget, og er søgbare
 * Undgå forkortelser
