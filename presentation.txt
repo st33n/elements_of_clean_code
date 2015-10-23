@@ -1,5 +1,7 @@
 = ELEMENTS OF CLEAN CODE
 Jens Nordahl og Steen Lehmann
 
+include::what.txt[]
 include::names.txt[]
+include::functions.txt[]
 
