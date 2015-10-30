@@ -4,4 +4,7 @@ Jens Nordahl og Steen Lehmann
 include::what.txt[]
 include::names.txt[]
 include::functions.txt[]
+include::nulls.txt[]
+include::error-handling.txt[]
+include::concurrency.txt[]
 

@@ -1,0 +1,2 @@
+== SAMTIDIGHED
+...aka concurrency, om tråde, trådsikkerhed, låse, baglås og den slags

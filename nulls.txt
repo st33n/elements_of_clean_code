@@ -1,0 +1,66 @@
+== NULLS
+...the billion dollar mistake
+
+[source, java]
+----
+String name = foo.getName()
+// What is name at this point?
+
+boolean isFancyName = name.length() > 10;
+----
+
+[source, java]
+----
+void someMethod(File f) {
+     // What is f at this point?
+
+     if (f.getPath().length() > 10) {
+        f.delete();
+     }
+}
+----
+
+
+== Nulls, hvad er problemet?
+
+- Svækker vores typer (`Foo x;`)
+- Leder til for meget eller for lidt fejlhåndtering 
+- Leder til grimme kontrakter
+
+
+[role='incremental']
+=== For lidt fejlhåndtering
+
+[source, java]
+----
+Customer c = repo.findCustomerByName("Merkwürdichliebe")
+List<Order> orders = c.getOrders();
+----
+
+[role='incremental']
+=== For meget fejlhåndtering
+
+[source, java]
+----
+Customer findCustomerByName(String name) {
+    if (name == null) {
+       throw new BogusArgException("Name cant be null");
+    }
+
+    String query = queryBuilder.buildQueryByName(name);
+    List<Customer> result = executeQuery(query);
+    return firstOrNull(result);
+}
+----
+
+== Hvad kan vi gøre?
+
+- Konventioner / kontrakter
+- Brug Optional<T>
+- Brug et ordentligt sprog ;-)
+
+== Nulls i dynamisk typede sprog
+
+??
+
+
