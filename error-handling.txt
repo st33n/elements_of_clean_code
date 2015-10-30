@@ -1,5 +1,78 @@
 == FEJLHÅNDTERING
 
-blabla
+- Bad shit will happen
+- Robust kode skal kunne overleve
+- Vi er nødt til at håndtere fejl
+
+[role='incremental']
+--
+Fejl? Omstændigheder der ikke er "normale"...
+
+For eksempel
+
+- Fil eksisterer ikke
+- Device ikke initialiseret
+- Ingen netværksforbindelse
+--
+
+[role='incremental']
+--
+Men også
+
+- Der er noget galt med min kode
+- Min kode bliver brugt på en ikke-understøttet måde
+- Runtime systemet er i vanskeligheder (out of memory, etc)
+
+--
+
+== Brug exceptions i stedet for retur-koder
 
 
+== Normal flow vs. Exceptions
+
+Adskil normal flow fra fejlhåndtering
+
+== Tilføj kontekst til exceptions
+
+== Du må ikke lyve
+
+== Fail fast
+Aka: Don't swallow, Barf!
+
+Hvis en opstået fejl ikke kan håndteres
+fuldstændigt, skal man ikke prøve at lade som om.
+
+
+
+
+== Exception hierarkiet
+
+Brug exception typer i et hierarki, der tillader kaldende kode
+at håndtere fejlen (recover).
+
+Skelne mellem
+
+- Retryable: At forsøge at gen-udføre den fejlende operation vil sandsynligvis
+lykkes. For eksempel: `ConcurrentModificationException`.
+- Ugyldigt input: 
+- Permanent
+- Uventet
+
+For RESTful web services
+
+- Oversæt exceptions til HTTP status
+** Ugyldigt input: 400, 404
+** Retryable: 503 / 409 Conflict
+** Uventet: 500
+
+For transaktionsbehandling: Ved transaction boundary, rollback/retry.
+
+== Exception safeness
+
+== Logging
+
+Logging tilstrækkelig til at fejl kan troubleshootes, genskabes
+
+Forventede fejl (invalid input): Simpel logging
+
+Uventede fejl
