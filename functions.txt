@@ -1,0 +1,50 @@
+== FUNKTIONER / METODER
+
+* Bør være små
+* Nej, mindre! < 20 linjer.
+* Mange små funktioner -> navngivning
+* GØR 1 TING GODT - OG KUN DEN TING
+* Hold samme abstraktionsniveau
+* The Stepdown Rule
+** Første funktion har højest abstraktionsniveau
+** Næste funktioner har et niveau lavere, o.s.v.
+
+== Stepdown Rule
+
+Et program eller en klasse bør kunne læses som en serie
+af FOR AT sætninger:
+
+----
+FOR AT kunne gøre X og Z gør vi først X, så Y, og så Z.
+
+FOR AT gøre X gør vi A, og så B eller C
+
+FOR AT gøre Y gør vi D og E
+
+FOR AT gøre D ..
+...
+----
+
+== FUNKTIONSARGUMENTER
+
+* 0 er ideelt (niladisk)
+* 1 er ok (monadisk)
+* 2 kan funkere (dyadisk)
+* 3 bør undgås om muligt (triadisk)
+* 4 eller flere er fuldstændig vandvittigt (polyadisk)
+
+* Svært at teste alle kombinationer af argumenter
+
+== Monadiske former næsten ideelt
+
+* Stille spørgsmål
+** `boolean fileExists("MyFile")`
+* Tag et argument, transformer det, og returner resultatet.
+** `InputStream fileOpen("MyFile")`
+* Event - intet resultat, vigtigt med navngivning
+** `void passwordAttemptFailedNtimes(int attempts)`
+* Pas på med blandingsformer og output argument
+** `void transform(StringBuffer out)`
+** Bedre med `StringBuffer transform(StringBuffer in) { ... return in; }`
+
+
