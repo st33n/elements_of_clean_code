@@ -28,8 +28,7 @@ void someMethod(File f) {
 - Leder til grimme kontrakter
 
 
-[role='incremental']
-=== For lidt fejlhåndtering
+== For lidt fejlhåndtering
 
 [source, java]
 ----
@@ -37,8 +36,7 @@ Customer c = repo.findCustomerByName("Merkwürdichliebe")
 List<Order> orders = c.getOrders();
 ----
 
-[role='incremental']
-=== For meget fejlhåndtering
+== For meget fejlhåndtering
 
 [source, java]
 ----
@@ -53,11 +51,115 @@ Customer findCustomerByName(String name) {
 }
 ----
 
+== Grimme kontrakter
+
+Kontrakt: En aftale mellem to parter.
+
+.For eksempel
+************************************************
+Hvis du slår min græsplæne, så vasker jeg din bil.
+************************************************
+
+[role='incremental']
+.En grim kontrakt
+************************************************
+Hvis du slår min græsplæne, så vasker jeg din bil, men hvis
+du glemmer at slå græsset under buskene, så lader jeg være med at
+vaske sidespejlene, og hvis du kommer til at beskadige mit
+blomsterbed, så må jeg slå din hund i hovedet med en jernstang.
+************************************************
+
+== Kontrakter i software
+Kontrakter i software er ofte
+
+- En aftale mellem den kaldende part og den kaldte part
+- Funktionssignaturer og kommentarer.
+
+[role='incremental']
+=== Eksempel
+Hvad er kontrakten her?
+
+[source, java]
+----
+Customer findCustomerByName(String name);
+----
+
+[source, java]
+----
+/** Finds the customer by name.
+*
+* If there is no customer, then null is returned.
+* Name must not be null.
+*/
+Customer findCustomerByName(String name);
+----
+
+[source, java]
+----
+// And if you pass null, i get to hit your dog
+// over the head with this iron rod
+----
+
 == Hvad kan vi gøre?
 
 - Konventioner / kontrakter
 - Brug Optional<T>
 - Brug et ordentligt sprog ;-)
+
+== Hvad kan vi gøre? 
+
+- Konventioner / kontrakter
+
+Hav en fast strategi for hvert projekt.
+
+.For eksempel
+****
+- Returner som udgangspunkt aldrig `null`, med mindre det er dokumenteret.
+- Brug aldrig `null` som argument. Valgfri argumenter håndteres med overloading. 
+****
+
+[role='incremental']
+[source, java]
+----
+/** Returns the customer, or null if not found.
+*/
+Customer findCustomerByName(String name) {
+    String query = queryBuilder.buildQueryByName(name);
+    List<Customer> result = executeQuery(query);
+    return firstOrNull(result);
+}
+----
+
+== Hvad kan vi gøre?
+
+- Brug Optional<T>
+** Konvention: Brug aldrig null som returværdi eller argument
+** Wrap valgfri værdier med Optional<T> eller lignende
+** Typesystemet tvinger en til at gøre det rigtige
+** Koden bliver selvdokumenterende
+
+[role='incremental']
+[source, java]
+----
+Optional<Customer> findCustomerByName(String name);
+----
+
+[role='incremental']
+[source, java]
+----
+Optional<Customer> c
+    = repo.findCustomerByName("Merkwürdichliebe");
+    
+if (c.isPresent()) {
+   List<Order> orders = c.getOrders();
+   // ...
+}
+else {
+   // do something else...
+}
+----
+
+
 
 == Nulls i dynamisk typede sprog
 
