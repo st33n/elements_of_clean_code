@@ -27,52 +27,392 @@ Men også
 
 == Brug exceptions i stedet for retur-koder
 
+Returkoder - et levn fra en svunden tid...
+
+- Tvinger kalderen til at lave fejlhåndtering
+- Forhindrer kalderen i at lave "normal case flow"
+- Ikke er nemme at udvide
+
+[role='incremental']
+[source, java]
+----
+boolean deleteIfNotPremium(String customerId) {
+    Customer customer = openCustomer(customerId);
+    if (customer.getOpStatus() == Status.NOT_FOUND) {
+       logger.warn("Customer not found");
+       return false;
+    }
+
+    if (! customer.isPremium()) {
+        boolean deleteSuccess = deleteCustomer(customerId);
+        if (!deleteSuccess) {
+           logger.warn("Failed to delete");
+        }
+        return deleteSuccess;
+    }
+}
+
+----
+
+[role='incremental']
+[source, java]
+----
+void deleteIfNotPremium(String customerId) {
+    Customer customer = findCustomerById(customerId);
+    if (! customer.isPremium()) {
+        deleteCustomer(customerId);
+    }
+}
+----
 
 == Normal flow vs. Exceptions
 
 Adskil normal flow fra fejlhåndtering
 
+- Normal kode skal kun bekymre sig om normal flow
+- Kode der opdager en fejltilstand, smider en exception
+- Kode der håndterer fejl, fanger en exception
+
+....
+f1()
+  --> f2() // handles
+        --> f3()
+              --> f4()
+                    --> f5() // throws
+....
+
 == Tilføj kontekst til exceptions
+
+Nok information til at en handler eller et menneske der læser
+loggen kan regne ud hvad der er sket.
+
+- Type af exception
+- Message
+- Andet relevant information
+
+[role='incremental']
+--
+Dårligt eksempel
+
+[source, java]
+----
+void frobnicateCustomer(String customerId) {
+    Customer customer = findCustomerById(customerId);
+    if (customer.getCreditRating() != CreditRating.GOOD) {
+       throw new Exception("D00d, you lose!");
+    }
+
+    // ...
+}
+----
+--
+
+[role='incremental']
+--
+Bedre eksempel
+
+[source, java]
+----
+void frobnicateCustomer(String customerId) {
+    Customer customer = findCustomerById(customerId);
+    if (customer.getCreditRating() != CreditRating.GOOD) {
+       throw new CustomerException(
+             "Expected GOOD credit rating",
+             customerId);
+    }
+
+    // ...
+}
+----
+--
 
 == Du må ikke lyve
 
-== Fail fast
-Aka: Don't swallow, Barf!
+Tæt på deadline, projektlederen har tics, stemningen er dårlig
 
+[source, java]
+----
+List<Order> findFlaggedOrders(Product product) {
+    List<Order> orders = repository.findOrders(product);
+    return orders.filter(o => o.isFlagged());
+}
+----
+
+[role='incremental']
+...og det er jeres forbindelse også: `ConnectionException`!
+
+[role='incremental']
+[source, java]
+----
+List<Order> findFlaggedOrders(Product product) {
+  try {
+    List<Order> orders = repository.findOrders(product);
+    return orders.filter(o => o.isFlagged());
+  } 
+  catch (ConnectionException e) {
+    return new ArrayList<Order>();
+  }
+}
+----
+
+[role='incremental']
+Fald ikke for fristelsen.
+
+[role='incremental']
+Det bliver opdaget.
+
+[role='incremental']
+Der er en grund til at det hedder `git blame`.
+
+[role='incremental']
+Og ham den store udvikler nede på tredie som skal vedligeholde koden,
+han ved hvor du bor. 
+
+== Du må ikke lyve (2)
+
+Det handler ikke kun om fejlhåndtering, men om kode generelt.
+
+- Koden fortæller en historie. Om dine intentioner og din mentale model.
+- Det er værre at lyve end at holde munden lukket.
+- Og bedst at sige det som det er.
+
+[role='incremental']
+--
+Perverst...
+
+[source, java]
+----
+List<Order> findFlaggedCustomers(Product product) {
+    List<Order> customers = repository.findOrders(product);
+    return customers.filter(c => c.isFlagged());
+}
+----
+--
+
+[role='incremental']
+--
+Ondskabsfuldt...
+
+[source, java]
+----
+boolean validateFile(File f) {
+    String fileData = readFile(f);
+    if (isValidData(fileData)) {
+       return true;
+    }
+    else {
+       f.delete(); // WTF
+       return false;
+    }
+}
+----
+--
+
+== Fail fast
+\... Don't swallow, Barf! ;-)
+
+[source, java]
+----
+void initializeModule() {
+    if (configuration.isValid()) {
+       configureModule(configuration);
+    }
+
+    try {
+        initializeConnection();
+    }
+    catch (Exception e) { /* ignored */ }
+
+    // ...
+}
+----
+
+[role='incremental']
+--
 Hvis en opstået fejl ikke kan håndteres
 fuldstændigt, skal man ikke prøve at lade som om.
 
+Gør opmærksom på problemet så tidligt som muligt, dvs. smid en exception.
+--
+
+[role='incremental']
+- Nemmere at fejlfinde
+- Symptom tæt på rodårsag, i både tid og rum
+- Mindre skade på tilstanden
+
+[role='incremental']
+[source, java]
+----
+void initializeModule() throws Exception {
+    if (configuration.isValid()) {
+        configureModule(configuration);
+    }
+    else {
+        throw new ConfigurationException(
+            "Configuration not valid");
+    }
+
+    initializeConnection(); // no need to catch
+                            // just let it bubble
+
+    // ...
+}
+----
+
+[role='incremental']
+=== Initialisering (af system, modul, etc)
+
+- Stop med det samme og aborter opstarten
+
+
+[role='incremental']
+=== Udførelse af en operation (request, transaktion, etc)
+
+- Stop med det samme og returner fejlresponse, rul tranaktion tilbage, etc
+
+
+[role='incremental']
+
+=== Java checked exceptions
+
+- Fristende at sluge en checked exception
+- Bedre at wrappe i RuntimeException
+
+
+[source, java]
+----
+void initializeModule() {
+    try {
+        initializeConnection();
+    }
+    catch (IOException e) {
+        throw new RuntimeException(
+              "Failed to initialize module", e);
+    }
+
+    // ...
+}
+----
 
 
 
-== Exception hierarkiet
 
-Brug exception typer i et hierarki, der tillader kaldende kode
-at håndtere fejlen (recover).
+== Exception typer
 
-Skelne mellem
+Definer exception typer, der tillader kaldende kode
+at håndtere exceptions meningsfuldt.
 
-- Retryable: At forsøge at gen-udføre den fejlende operation vil sandsynligvis
-lykkes. For eksempel: `ConcurrentModificationException`.
-- Ugyldigt input: 
-- Permanent
-- Uventet
+*Skelne* mellem
 
-For RESTful web services
+- Retryable (f.eks. concurrent modification)
+- Ugyldigt input 
+- Permanent 
+- Uventet problem (f.eks. fejl i koden, asserts, ...)
 
-- Oversæt exceptions til HTTP status
-** Ugyldigt input: 400, 404
-** Retryable: 503 / 409 Conflict
-** Uventet: 500
+Definer exceptions på samme *abstraktionsniveau* som dit modul
+eller applikation.
 
-For transaktionsbehandling: Ved transaction boundary, rollback/retry.
+____
+For et sagsbehandlingsmodul, giver `InvalidOrganizationException` måske
+mere mening end `EntityNotFoundException`.
+____
+
+Definer et *klassehierarki* af exceptions der tillader kaldende kode
+at lave enten generel eller specifik håndtering. 
+
+
+
+== Exception håndtering - Hvor? Hvordan?
+
+Ofte tæt ved grænseflader: system / modul / lag
+
+
+[role='incremental']
+=== RESTful web services
+
+--
+Exception håndtering på ydersiden af controller laget
+
+Oversæt exceptions til HTTP status
+
+* Ugyldigt input: 400
+* Ikke fundet: 404
+* Retryable: 503 / 409 Conflict
+* Uventet: 500
+
+--
+
+[role='incremental']
+=== Transaktionsbehandling
+--
+- Ved transaction boundary
+- Rollback/retry
+--
+
+[role='incremental']
+=== Logging
+
+--
+Logging tilstrækkelig til at fejl kan troubleshootes, genskabes
+
+- Forventede fejl (f.eks. invalid input): Simpel logging
+- Uventede fejl: Fuldt stack trace
+- Logging frameworks gør det nemt
+--
+
+[role='incremental']
+=== Exception translation
+
+--
+Konvertering af exceptions: lavt abstraktionsniveau -> højt
+
+Wrap den oprindelige exception
+--
+
+[source, java]
+----
+    try {
+        lowLevelCode();
+    }
+    catch (HostNotFoundException e) {
+        throw new FancyAbstractException(
+              "Failed to frobnicate", e);    
+    }
+    catch (SomeOtherLowLevelException e) {
+        throw new OtherFancyAbstractException(
+              "Failed to frobnicate", e);    
+    }   
+----
+
+[role='incremental']
+=== Pluggable exception handlers
+
+--
+- Definer et fejlhåndterings interface
+- Exception håndtering delegerer til handleren
+- Velegnet til framework / library
+--
+
+For eksempel
+
+[source, java]
+----
+interface WebExceptionHandler {
+    public void handle(Exception e, HttpResponse response);
+}
+----
+
+[source, java]
+----
+    try {
+        executeController(request, response);
+    }
+    catch (Exception e) {
+        WebExceptionHandler handler = determineHandler();
+        handler.handle(e, response);
+    }
+----
+
 
 == Exception safeness
 
-== Logging
-
-Logging tilstrækkelig til at fejl kan troubleshootes, genskabes
-
-Forventede fejl (invalid input): Simpel logging
-
-Uventede fejl
