@@ -17,13 +17,11 @@
 * Minimalt antal klasser, metoder, funktioner m.v.
 * Ingen duplikation
 * Kode som er testet af automatiske tests
-
-TESTS => ÆNDRINGER => LEVENDE KODE
-
-Ren Kode Er Levende Kode
+** Tests -> nemmere at lave ændringer => Levende Kode
 
 == HVAD KAN VI GØRE?
 
+* Lær nogle gode principper og følg dem
 * Ikke skyde skylden på andre
 * Ikke lade os presse op mod en deadline
 * Spejder-reglen

@@ -47,4 +47,28 @@ FOR AT gøre D ..
 ** `void transform(StringBuffer out)`
 ** Bedre med `StringBuffer transform(StringBuffer in) { ... return in; }`
 
+== Dyadiske former ... hmm
+
+* Sværere at forstå to argumenter end et
+* Rækkefølge?  `assertEquals(expected, actual);`
+* Selvfølgelig ok med `new Point(0, 0);`
+* Bedre fx at flytte et af argumenterne til egenskab på klassen
+
+== Triadisk ... uha!
+
+* Nemt at blive forvirret:
+
+[source, java]
+----
+assertEquals(message, expected, actual);
+
+Circle makeCircle(double x, double y, double radius);
+----
+
+Bedre at bruge værdi-klasser:
+
+[source, java]
+----
+Circle makeCircle(Point center, double radius);
+----
 

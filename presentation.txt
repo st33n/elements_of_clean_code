@@ -1,9 +1,20 @@
 = ELEMENTS OF CLEAN CODE
 Jens Nordahl og Steen Lehmann
 
+== Indhold
+
+* Hvad er Clean Code - og ikke?
+* Navne er vigtige
+* Funktioner/metoder
+* Kommentarer
+* Null
+* Fejlhåndtering
+* Concurrency
+
 include::what.txt[]
 include::names.txt[]
 include::functions.txt[]
+include::comments.txt[]
 include::nulls.txt[]
 include::error-handling.txt[]
 include::concurrency.txt[]

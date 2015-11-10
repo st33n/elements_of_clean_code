@@ -1,0 +1,19 @@
+== KOMMENTARER
+
+== Eksempel
+
+[source, java]
+----
+/**
+ * Set the content
+ * @param articleId
+ * @param publishDate
+ * @param content
+ * @return
+ * @throws DuplicateIdException
+ */
+public String setContent(String articleId, String title, Date publishDate, String content) throws DuplicateIdException {
+  ...
+}
+----
+
