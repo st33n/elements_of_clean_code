@@ -69,7 +69,7 @@ Customer findCustomerByName(String name) {
 
 Kontrakt: En aftale mellem to parter.
 
-.For eksempel
+.En pæn kontrakt
 ************************************************
 Hvis du slår min græsplæne, så vasker jeg din bil.
 ************************************************
