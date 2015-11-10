@@ -302,25 +302,42 @@ void initializeModule() {
 Definer exception typer, der tillader kaldende kode
 at håndtere exceptions meningsfuldt.
 
+[role='incremental']
+--
 *Skelne* mellem
 
 - Retryable (f.eks. concurrent modification)
 - Ugyldigt input 
 - Permanent 
 - Uventet problem (f.eks. fejl i koden, asserts, ...)
+--
 
+[role='incremental']
+--
 Definer exceptions på samme *abstraktionsniveau* som dit modul
 eller applikation.
 
-____
+****
 For et sagsbehandlingsmodul, giver `InvalidOrganizationException` måske
 mere mening end `EntityNotFoundException`.
-____
+****
+--
 
+[role='incremental']
+--
 Definer et *klassehierarki* af exceptions der tillader kaldende kode
 at lave enten generel eller specifik håndtering. 
 
-
+....
+Exception
+  RuntimeException
+    DataAccessException
+      RecoverableDataAccessException
+      NonTransientDataAccessExeption
+        DataIntegrityViolationException
+        PermissionDeniedDataAccessException
+....
+--
 
 == Exception håndtering - Hvor? Hvordan?
 
