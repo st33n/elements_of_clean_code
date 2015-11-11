@@ -17,5 +17,4 @@ include::functions.txt[]
 include::comments.txt[]
 include::nulls.txt[]
 include::error-handling.txt[]
-include::concurrency.txt[]
 
