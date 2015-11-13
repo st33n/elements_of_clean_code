@@ -430,6 +430,3 @@ interface WebExceptionHandler {
     }
 ----
 
-
-== Exception safeness
-
