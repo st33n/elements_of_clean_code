@@ -72,3 +72,28 @@ Bedre at bruge værdi-klasser:
 Circle makeCircle(Point center, double radius);
 ----
 
+== Generelt
+
+* Pas på side effekter
+[source, java]
+----
+public boolean hasOrder(String orderType, OrderAllocationGrid grid) {
+  ...
+}
+
+// Check if there is an order of that type and if so, add it to the grid
+if (hasOrder(type, grid) {
+  ...
+}
+----
+
+* Command Query Separation
+[source, java]
+----
+// Set the value of title if it exists
+if (set("title", "Introduction")) {
+  ...
+}
+----
+
+

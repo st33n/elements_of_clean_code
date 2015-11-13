@@ -1,0 +1,11 @@
+== ØVELSER
+
+* Find en klasse i dit nuværende projekt
+  (eller dit yndlings Open Source projekt)
+
+* Find mindst to ting som ikke er Clean Code
+
+* Diskuter eller implementer forbedringer
+
+* Vis for alle
+

@@ -8,6 +8,15 @@
 
 * Hver ny feature tager længere tid end den sidste.
 * Koden "rådner"
+
+[width="75%"]
+|============
+| r12039 | 2014-08-31 | Config issue    | u32029
+| r9883  | 2011-12-13 | New structure   | u21029
+| r2001  | 2008-04-02 | Fix bug #271    | u20928
+| r1     | 2007-10-01 | Initial import  | u10209
+|============
+
 * Det Store Redesign
 
 == HVAD ER CLEAN CODE SÅ?

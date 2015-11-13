@@ -1,7 +1,5 @@
 == KOMMENTARER
 
-== Eksempel
-
 [source, java]
 ----
 /**

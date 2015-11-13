@@ -9,7 +9,7 @@ Jens Nordahl og Steen Lehmann
 * Kommentarer
 * Null
 * Fejlhåndtering
-* Concurrency
+* Øvelser
 
 include::what.txt[]
 include::names.txt[]
@@ -17,4 +17,5 @@ include::functions.txt[]
 include::comments.txt[]
 include::nulls.txt[]
 include::error-handling.txt[]
+include::exercises.txt[]
 
